@@ -34,24 +34,28 @@ class AudioEffectFreeverb_F32 : public AudioStream_F32
 public:
 	AudioEffectFreeverb_F32();
 	virtual void update();
-	void roomsize(float n) {
-		if (n > 1.0f) n = 1.0f;
-		else if (n < 0.0) n = 0.0f;
-		//combfeeback = (n * 9175.04f) + 22937.0;
-		combfeeback = (n * 9175.04f/32768.0f) + 22937.0/32768.0f;
+	void roomsize(float n)
+	{
+		if (n > 1.0f)
+			n = 1.0f;
+		else if (n < 0.0)
+			n = 0.0f;
+		combfeeback = (n * 0.28f) + 0.6999816895f;
 	}
-	void damping(float n) {
-		if (n > 1.0f) n = 1.0f;
-		else if (n < 0.0) n = 0.0f;
-		//float x1 = (n * 13107.2f);
-		//float x2 = 32768.0 - x1;
-		float x1 = (n * 13107.2f/ 32768.0f);
+	void damping(float n)
+	{
+		if (n > 1.0f)
+			n = 1.0f;
+		else if (n < 0.0)
+			n = 0.0f;
+		float x1 = (n * 0.4f);
 		float x2 = 1.0 - x1;
 		__disable_irq();
 		combdamp1 = x1;
 		combdamp2 = x2;
 		__enable_irq();
 	}
+
 private:
 	audio_block_f32_t *inputQueueArray[1];
 	audio_block_f32_t zeroblock;
@@ -92,30 +96,33 @@ private:
 	uint16_t allpass4index;
 };
 
-
 class AudioEffectFreeverbStereo_F32 : public AudioStream_F32
 {
 public:
 	AudioEffectFreeverbStereo_F32();
 	virtual void update();
-	void roomsize(float n) {
-		if (n > 1.0f) n = 1.0f;
-		else if (n < 0.0) n = 0.0f;
-		//combfeeback = (n * 9175.04f) + 22937.0;
-		combfeeback = (n * 9175.04f/32768.0f) + 22937.0/32768.0f;
+	void roomsize(float n)
+	{
+		if (n > 1.0f)
+			n = 1.0f;
+		else if (n < 0.0)
+			n = 0.0f;
+		combfeeback = (n * 9175.04f / 32768.0f) + 22937.0 / 32768.0f;
 	}
-	void damping(float n) {
-		if (n > 1.0f) n = 1.0f;
-		else if (n < 0.0) n = 0.0f;
-		//float x1 = (n * 13107.2f);
-		//float x2 = 32768.0 - x1;
-		float x1 = (n * 13107.2f/ 32768.0f);
+	void damping(float n)
+	{
+		if (n > 1.0f)
+			n = 1.0f;
+		else if (n < 0.0)
+			n = 0.0f;
+		float x1 = (n * 13107.2f / 32768.0f);
 		float x2 = 1.0 - x1;
 		__disable_irq();
 		combdamp1 = x1;
 		combdamp2 = x2;
 		__enable_irq();
 	}
+
 private:
 	audio_block_f32_t *inputQueueArray[1];
 	audio_block_f32_t zeroblock;
@@ -188,6 +195,4 @@ private:
 	uint16_t allpass4indexR;
 };
 
-
 #endif
-
